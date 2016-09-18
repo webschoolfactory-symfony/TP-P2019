@@ -1,0 +1,5 @@
+'AppBundle\Entity\Subject':
+    subject_{1..50}:
+        title: '<sentence()>'
+        description: '<sentences(3, true)>'
+        resolved: '50%? true : false'

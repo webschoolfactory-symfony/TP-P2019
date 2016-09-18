@@ -2,12 +2,20 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}WSF{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <section>
+            <h1>WSF - TP Symfony P2019</h1>
+            <main>
+                <h2>{{ block('title') }}</h2>
+                <section>
+                    {% block body %}{% endblock %}
+                </section>
+            </main>
+        </section>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Sujets' %}
+
+{% block body %}
+    {% for subject in subjects %}
+        <article>
+            <h3>{{ subject.title }}</h3>
+            <section>{{ subject.description }}</section>
+        </article>
+    {% endfor %}
+{% endblock %}
