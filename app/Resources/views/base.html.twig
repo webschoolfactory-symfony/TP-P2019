@@ -5,9 +5,10 @@
         <title>{% block title %}WSF{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" />
     </head>
     <body>
-        <section>
+        <section class="container">
             <h1>WSF - TP Symfony P2019</h1>
             <main>
                 <h2>{{ block('title') }}</h2>

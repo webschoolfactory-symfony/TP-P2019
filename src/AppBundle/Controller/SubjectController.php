@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class SubjectController extends Controller
 {
     /**
-     * @Route(path="/", methods={"GET"})
+     * @Route(path="/", methods={"GET"}, name="subject_index")
      * @Template()
      */
     public function indexAction()
