@@ -1,0 +1,19 @@
+version: 1.10.0.{build}
+environment:
+  TIMEOUT: "60m"
+  DOCKER_REMOTE_DAEMON: "1"
+
+install:
+  - powershell -file cpuid.ps1
+  - choco install -y mingw
+  - choco install -y virtualbox
+  - choco install -y docker-machine
+
+build_script:
+  - docker-machine.exe create -d virtualbox default
+  - ps: docker-machine.exe env default --shell powershell | Invoke-Expression
+  - docker.exe ps
+
+artifacts:
+  - path: '**\*.exe'
+name: Binary

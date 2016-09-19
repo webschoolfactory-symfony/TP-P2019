@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker-compose run --entrypoint=php -d cli composer.phar $*
+docker run --rm -v $PWD:/www tpp2019_cli php composer.phar $*
