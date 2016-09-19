@@ -14,6 +14,3 @@ build_script:
   - ps: docker-machine.exe env default --shell powershell | Invoke-Expression
   - docker.exe ps
 
-artifacts:
-  - path: '**\*.exe'
-name: Binary
