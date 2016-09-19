@@ -23,6 +23,4 @@ cli:
     build:        docker/cli
     volumes_from: [ data ]
     links:        [ mysql ]
-    stdin_open:   true
-    tty:          true
     volumes:      [ '.:/www' ]
