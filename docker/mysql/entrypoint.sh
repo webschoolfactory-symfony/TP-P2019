@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -e
 
-if [ -z "$(ls -A /data/mysql)" -a "${1%_safe}" = 'mysqld' ]; then
+if [ ! -d /data/mysql ]; then
 	if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
 		echo >&2 'error: database is uninitialized and MYSQL_ROOT_PASSWORD not set'
 		echo >&2 '  Did you forget to add -e MYSQL_ROOT_PASSWORD=... ?'
@@ -23,7 +23,7 @@ if [ -z "$(ls -A /data/mysql)" -a "${1%_safe}" = 'mysqld' ]; then
 		FLUSH PRIVILEGES ;
 	EOSQL
 
-	exec "$@" --init-file=/tmp/mysql-first-time.sql
+	mysqld --init-file=/tmp/mysql-first-time.sql
 fi
 
-exec "$@"
+mysqld
