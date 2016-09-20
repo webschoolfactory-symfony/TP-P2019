@@ -8,9 +8,13 @@ fpm:
     volumes:      [ '.:/www' ]
 
 mysql:
-    build:        docker/mysql
-    volumes_from: [ data ]
-    environment:  { MYSQL_ROOT_PASSWORD: root }
+    image:        mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: wsf
+        MYSQL_USER: wsf
+        MYSQL_PASSWORD: wsf
+
 
 apache:
     image:        unzeroun/apache
