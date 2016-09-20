@@ -10,7 +10,7 @@ class SubjectRepository extends EntityRepository
     {
         return $this->createQueryBuilder('subject')
             ->where('subject.resolved = false')
-            ->orderBy('subject.updatedAt', 'DESC')
+            ->orderBy('subject.upVote - subject.downVote', 'DESC')
             ->getQuery()
             ->getResult();
     }

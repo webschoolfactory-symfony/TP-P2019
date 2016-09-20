@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Sujet ' ~ subject.title %}
+
+{% block body %}
+    <article class="card card-block">
+        <h3 class="card-title">
+            {{ subject.votes }}
+            <a href="{{ path('subject_vote_down', { id: subject.id }) }}">&downarrow;</a>
+            <a href="{{ path('subject_vote_up', { id: subject.id }) }}">&uparrow;</a>
+            {{ subject.title }}
+        </h3>
+        <section class="card-text">{{ subject.description }}</section>
+        <span class="card-text">
+            <small class="text-muted">
+                {{ subject.updatedAt|localizeddate }}
+            </small>
+        </span>
+    </article>
+{% endblock %}

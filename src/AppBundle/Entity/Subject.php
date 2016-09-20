@@ -55,8 +55,23 @@ class Subject
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @var integer
+     */
+    private $upVote;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @var integer
+     */
+    private $downVote;
+
     public function __construct()
     {
+        $this->upVote = $this->downVote = 0;
         $this->resolved  = false;
         $this->createdAt = new \DateTime;
         $this->updatedAt = new \DateTime;
@@ -134,7 +149,25 @@ class Subject
         $this->resolved = $resolved;
     }
 
+    public function getVotes()
+    {
+        return $this->upVote - $this->downVote;
+    }
 
+    public function isVoteNegative()
+    {
+        return $this->downVote > $this->upVote;
+    }
+
+    public function voteUp()
+    {
+        $this->upVote++;
+    }
+
+    public function voteDown()
+    {
+        $this->downVote++;
+    }
 
     /**
      * @ORM\PreUpdate()

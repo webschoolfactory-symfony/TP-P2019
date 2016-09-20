@@ -5,7 +5,10 @@
 {% block body %}
     {% for subject in subjects %}
         <article class="card card-block">
-            <h3 class="card-title">{{ subject.title }}</h3>
+            <h3 class="card-title">
+                {{ subject.votes }}
+                <a href="{{ path('subject_show', {id: subject.id}) }}">{{ subject.title }}</a>
+            </h3>
             <section class="card-text">{{ subject.description }}</section>
             <span class="card-text">
                 <small class="text-muted">
