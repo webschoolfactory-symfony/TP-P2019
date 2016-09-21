@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -69,12 +71,20 @@ class Subject
      */
     private $downVote;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Reply", mappedBy="subject")
+     *
+     * @var Collection<Reply>
+     */
+    private $replies;
+
     public function __construct()
     {
-        $this->upVote = $this->downVote = 0;
+        $this->upVote    = $this->downVote = 0;
         $this->resolved  = false;
         $this->createdAt = new \DateTime;
         $this->updatedAt = new \DateTime;
+        $this->replies   = new ArrayCollection();
     }
 
     /**
@@ -167,6 +177,14 @@ class Subject
     public function voteDown()
     {
         $this->downVote++;
+    }
+
+    /**
+     * @return Collection<Reply>
+     */
+    public function getReplies()
+    {
+        return $this->replies;
     }
 
     /**

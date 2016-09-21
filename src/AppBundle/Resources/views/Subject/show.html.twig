@@ -16,5 +16,23 @@
                 {{ subject.updatedAt|localizeddate }}
             </small>
         </span>
+
+        {% for reply in subject.replies %}
+            <article class="card card-block">
+                <section class="card-text">{{ reply.text }}</section>
+                <span class="card-text">
+                    <small class="text-muted">
+                        {{ subject.updatedAt|localizeddate }}
+                    </small>
+                </span>
+            </article>
+        {% endfor %}
+
+        <form action="{{ path('subject_show', {id: subject.id}) }}" method="POST">
+            {{ form_widget(form) }}
+            {{ form_rest(form) }}
+
+            <button type="submit">Répondre</button>
+        </form>
     </article>
 {% endblock %}

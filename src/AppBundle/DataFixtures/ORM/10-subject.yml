@@ -7,3 +7,8 @@
         title: '<sentence()>'
         description: '<sentences(3, true)>'
         resolved: false
+
+'AppBundle\Entity\Reply':
+    reply_{1..500}:
+        subject: '@subject_*'
+        text:    '<sentences(3, true)>'
