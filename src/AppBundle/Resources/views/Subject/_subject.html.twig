@@ -1,12 +1,14 @@
 <h3 class="card-title"{% if subject.voteNegative %} style="background: grey;"{% endif %}>
-    {{ subject.votes }}
-    <a href="{{ path('subject_vote_down', { id: subject.id }) }}">&downarrow;</a>
-    <a href="{{ path('subject_vote_up', { id: subject.id }) }}">&uparrow;</a>
+    <span id="subject-vote-{{ subject.id }}">{{ subject.votes }}</span>
+    <a data-vote-on="#subject-vote-{{ subject.id }}" href="{{ path('subject_vote_down', { id: subject.id }) }}">&downarrow;</a>
+    <a data-vote-on="#subject-vote-{{ subject.id }}" href="{{ path('subject_vote_up', { id: subject.id }) }}">&uparrow;</a>
     <a href="{{ path('subject_show', {id: subject.id}) }}">
         {{ subject.title }}
     </a>
 </h3>
-<a href="{{ path('subject_remove', {'id': subject.id}) }}">Supprimer</a>
+{% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('subject_remove', {'id': subject.id}) }}">Supprimer</a>
+{% endif %}
 <a href="{{ path('subject_resolve', {id: subject.id}) }}">Marquer comme résolu</a>
 <section class="card-text">{{ subject.description }}</section>
 <span class="card-text">

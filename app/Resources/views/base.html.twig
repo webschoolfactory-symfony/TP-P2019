@@ -5,15 +5,23 @@
         <title>{% block title %}WSF{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     </head>
     <body>
         <section class="container">
             <h1><a href="{{ path('homepage') }}"> WSF - TP Symfony P2019</a></h1>
-            <nav>
-                <ul>
-                    <li><a href="{{ path('subject_resolved') }}">Sujets résolus</a></li>
-                    <li><a href="{{ path('subject_create') }}">Nouveau sujet</a></li>
+            <nav class="main-nav">
+                <ul class="main-nav-list">
+                    <li class="main-nav-list-item">
+                        <a class="main-nav-link" href="{{ path('subject_resolved') }}">Sujets résolus</a>
+                    </li>
+                    <li class="main-nav-list-item">
+                        <a class="main-nav-link" href="{{ path('subject_create') }}">Nouveau sujet</a>
+                    </li>
+                    <li class="main-nav-list-item">
+                        <a class="main-nav-link" href="{{ path('logout') }}">Déconnexion</a>
+                    </li>
                 </ul>
             </nav>
             <main>
@@ -23,6 +31,7 @@
                 </section>
             </main>
         </section>
+        <script src="{{ asset('js/all.js') }}" async></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Reply;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route(path="/replies")
@@ -19,7 +20,7 @@ class ReplyController extends Controller
         $reply->voteUp();
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('subject_show', ['id' => $reply->getSubject()->getId()]);
+        return new JsonResponse($reply->getVotes());
     }
 
     /**
@@ -30,7 +31,7 @@ class ReplyController extends Controller
         $reply->voteDown();
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('subject_show', ['id' => $reply->getSubject()->getId()]);
+        return new JsonResponse($reply->getVotes());
     }
 
 
@@ -39,6 +40,8 @@ class ReplyController extends Controller
      */
     public function removeAction(Reply $reply)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $subjectId = $reply->getSubject()->getId();
         $this->getDoctrine()->getManager()->remove($reply);
         $this->getDoctrine()->getManager()->flush();

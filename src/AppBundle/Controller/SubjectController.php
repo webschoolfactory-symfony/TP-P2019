@@ -9,6 +9,7 @@ use AppBundle\Form\Type\SubjectType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -42,9 +43,8 @@ class SubjectController extends Controller
      * @Route(path="/{id}", methods={"GET", "POST"}, name="subject_show", requirements={"id": "\d+"})
      * @Template()
      */
-    public function showAction(Request $request, $id)
+    public function showAction(Request $request, Subject $subject)
     {
-        $subject = $this->getDoctrine()->getRepository(Subject::class)->find($id);
         $reply   = new Reply();
         $reply->setSubject($subject);
 
@@ -60,7 +60,7 @@ class SubjectController extends Controller
 
         return [
             'subject' => $subject,
-            'form' => $form->createView(),
+            'form'    => $form->createView(),
             'replies' => $this->getDoctrine()->getRepository(Reply::class)->findOrderedBySubject($subject)
         ];
     }
@@ -84,17 +84,6 @@ class SubjectController extends Controller
     }
 
     /**
-     * @Route(path="/{id}/vote/up", methods={"GET"}, name="subject_vote_up")
-     */
-    public function voteUpAction(Subject $subject)
-    {
-        $subject->voteUp();
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('subject_show', ['id' => $subject->getId()]);
-    }
-
-    /**
      * @Route(path="/{id}/resolve", methods={"GET"}, name="subject_resolve")
      */
     public function resolveAction(Subject $subject)
@@ -110,6 +99,8 @@ class SubjectController extends Controller
      */
     public function removeAction(Subject $subject)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $this->getDoctrine()->getManager()->remove($subject);
         $this->getDoctrine()->getManager()->flush();
 
@@ -124,6 +115,17 @@ class SubjectController extends Controller
         $subject->voteDown();
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('subject_show', ['id' => $subject->getId()]);
+        return new JsonResponse($subject->getVotes());
+    }
+
+    /**
+     * @Route(path="/{id}/vote/up", methods={"GET"}, name="subject_vote_up")
+     */
+    public function voteUpAction(Subject $subject)
+    {
+        $subject->voteUp();
+        $this->getDoctrine()->getManager()->flush();
+
+        return new JsonResponse($subject->getVotes());
     }
 }

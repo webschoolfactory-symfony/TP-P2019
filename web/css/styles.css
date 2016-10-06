@@ -1,0 +1,46 @@
+body {
+
+}
+
+h1 a {
+    color:           #555;
+    text-decoration: none;
+}
+
+.container {
+    width:  90%;
+    margin: 0 auto;
+}
+
+.main-nav {
+    display: table;
+    margin-left: -1.4em;
+}
+
+.main-nav-list {
+    display: table-row;
+}
+
+.main-nav-list-item {
+    display: table-cell;
+}
+
+.main-nav-link {
+    color: #555;
+    font-weight: bold;
+    font-size: 1.4em;
+    padding:   0 1em;
+}
+
+h2 {
+    margin: 2em 0 0 0;
+}
+
+h4 {
+    font-size: 2em;
+    margin: 2em 0 0 0;
+}
+
+.reply {
+    margin-left: 2em;
+}

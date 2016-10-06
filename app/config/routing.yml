@@ -5,6 +5,9 @@ homepage:
         path: /subjects
         permanent: true
 
+logout:
+    path: /logout
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
