@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Reply;
 use AppBundle\Entity\Subject;
+use AppBundle\Form\Type\ReplyType;
+use AppBundle\Form\Type\SubjectType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,7 +28,18 @@ class SubjectController extends Controller
     }
 
     /**
-     * @Route(path="/{id}", methods={"GET", "POST"}, name="subject_show")
+     * @Route(path="/resolved", methods={"GET"}, name="subject_resolved")
+     * @Template()
+     */
+    public function showResolvedAction()
+    {
+        return [
+            'subjects' => $this->getDoctrine()->getRepository(Subject::class)->findResolved()
+        ];
+    }
+
+    /**
+     * @Route(path="/{id}", methods={"GET", "POST"}, name="subject_show", requirements={"id": "\d+"})
      * @Template()
      */
     public function showAction(Request $request, $id)
@@ -34,9 +47,8 @@ class SubjectController extends Controller
         $subject = $this->getDoctrine()->getRepository(Subject::class)->find($id);
         $reply   = new Reply();
         $reply->setSubject($subject);
-        $form = $this->createFormBuilder($reply, ['method' => 'POST'])
-            ->add('text')
-            ->getForm();
+
+        $form = $this->createForm(ReplyType::class, $reply, ['method' => 'POST']);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -46,7 +58,29 @@ class SubjectController extends Controller
             return $this->redirectToRoute('subject_show', ['id' => $subject->getId()]);
         }
 
-        return ['subject' => $subject, 'form' => $form->createView()];
+        return [
+            'subject' => $subject,
+            'form' => $form->createView(),
+            'replies' => $this->getDoctrine()->getRepository(Reply::class)->findOrderedBySubject($subject)
+        ];
+    }
+
+    /**
+     * @Route(path="/create", methods={"GET", "POST"}, name="subject_create")
+     * @Template()
+     */
+    public function createAction(Request $request)
+    {
+        $form = $this->createForm(SubjectType::class);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($subject = $form->getData());
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('subject_show', ['id' => $subject->getId()]);
+        }
+
+        return ['form' => $form->createView()];
     }
 
     /**
@@ -58,6 +92,28 @@ class SubjectController extends Controller
         $this->getDoctrine()->getManager()->flush();
 
         return $this->redirectToRoute('subject_show', ['id' => $subject->getId()]);
+    }
+
+    /**
+     * @Route(path="/{id}/resolve", methods={"GET"}, name="subject_resolve")
+     */
+    public function resolveAction(Subject $subject)
+    {
+        $subject->resolve();
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('subject_show', ['id' => $subject->getId()]);
+    }
+
+    /**
+     * @Route(path="/{id}/remove", methods={"GET"}, name="subject_remove")
+     */
+    public function removeAction(Subject $subject)
+    {
+        $this->getDoctrine()->getManager()->remove($subject);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('subject_index');
     }
 
     /**

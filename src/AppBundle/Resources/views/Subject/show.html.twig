@@ -4,22 +4,21 @@
 
 {% block body %}
     <article class="card card-block">
-        <h3 class="card-title">
-            {{ subject.votes }}
-            <a href="{{ path('subject_vote_down', { id: subject.id }) }}">&downarrow;</a>
-            <a href="{{ path('subject_vote_up', { id: subject.id }) }}">&uparrow;</a>
-            {{ subject.title }}
-        </h3>
-        <section class="card-text">{{ subject.description }}</section>
-        <span class="card-text">
-            <small class="text-muted">
-                {{ subject.updatedAt|localizeddate }}
-            </small>
-        </span>
 
-        {% for reply in subject.replies %}
-            <article class="card card-block">
-                <section class="card-text">{{ reply.text }}</section>
+        {{ include('@App/Subject/_subject.html.twig', {subject: subject}) }}
+
+        <h4>Replies</h4>
+
+        {% for reply in replies %}
+            <article class="card card-block"{% if reply.voteNegative %} style="background: grey;"{% endif %}>
+                <h5>
+                    {{ reply.votes }}
+                    <a href="{{ path('reply_vote_down', { id: reply.id }) }}">&downarrow;</a>
+                    <a href="{{ path('reply_vote_up', { id: reply.id }) }}">&uparrow;</a>
+                    {{ reply.author }}
+                </h5>
+                <a href="{{ path('reply_remove', {id: reply.id}) }}">Supprimer</a>
+                <section class="card-text">{{ reply.text | nl2br }}</section>
                 <span class="card-text">
                     <small class="text-muted">
                         {{ subject.updatedAt|localizeddate }}

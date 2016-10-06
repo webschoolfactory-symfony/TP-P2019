@@ -10,6 +10,12 @@
     <body>
         <section class="container">
             <h1><a href="{{ path('homepage') }}"> WSF - TP Symfony P2019</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ path('subject_resolved') }}">Sujets résolus</a></li>
+                    <li><a href="{{ path('subject_create') }}">Nouveau sujet</a></li>
+                </ul>
+            </nav>
             <main>
                 <h2>{{ block('title') }}</h2>
                 <section>

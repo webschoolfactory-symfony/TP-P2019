@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SubjectRepository")
@@ -23,6 +24,7 @@ class Subject
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      *
      * @var string
@@ -30,6 +32,7 @@ class Subject
     private $title;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="text")
      *
      * @var string
@@ -72,7 +75,7 @@ class Subject
     private $downVote;
 
     /**
-     * @ORM\OneToMany(targetEntity="Reply", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="Reply", mappedBy="subject", cascade={"ALL"})
      *
      * @var Collection<Reply>
      */
@@ -93,6 +96,11 @@ class Subject
     public function getId()
     {
         return $this->id;
+    }
+
+    public function resolve()
+    {
+        $this->resolved = true;
     }
 
     /**

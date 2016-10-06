@@ -3,9 +3,10 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ReplyRepository")
  * @ORM\Table()
  * @ORM\HasLifecycleCallbacks()
  *
@@ -30,11 +31,34 @@ class Reply
     private $subject;
 
     /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    private $author;
+
+    /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="text")
      *
      * @var string
      */
     private $text;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    private $upVote;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    private $downVote;
 
     /**
      * @ORM\Column(type="datetime")
@@ -52,6 +76,7 @@ class Reply
 
     public function __construct()
     {
+        $this->upVote = $this->downVote = 0;
         $this->createdAt = new \DateTime;
         $this->updatedAt = new \DateTime;
     }
@@ -97,6 +122,22 @@ class Reply
     }
 
     /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -110,6 +151,26 @@ class Reply
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    public function getVotes()
+    {
+        return $this->upVote - $this->downVote;
+    }
+
+    public function isVoteNegative()
+    {
+        return $this->downVote > $this->upVote;
+    }
+
+    public function voteUp()
+    {
+        $this->upVote++;
+    }
+
+    public function voteDown()
+    {
+        $this->downVote++;
     }
 
     /**

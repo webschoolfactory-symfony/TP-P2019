@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Nouveau Sujet' %}
+
+{% block body %}
+    <form method="POST" action="{{ path('subject_create') }}" novalidate>
+        {{ form_widget(form) }}
+
+        <button type="submit">Valider</button>
+    </form>
+{% endblock %}
+

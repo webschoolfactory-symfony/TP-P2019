@@ -1,0 +1,16 @@
+<h3 class="card-title"{% if subject.voteNegative %} style="background: grey;"{% endif %}>
+    {{ subject.votes }}
+    <a href="{{ path('subject_vote_down', { id: subject.id }) }}">&downarrow;</a>
+    <a href="{{ path('subject_vote_up', { id: subject.id }) }}">&uparrow;</a>
+    <a href="{{ path('subject_show', {id: subject.id}) }}">
+        {{ subject.title }}
+    </a>
+</h3>
+<a href="{{ path('subject_remove', {'id': subject.id}) }}">Supprimer</a>
+<a href="{{ path('subject_resolve', {id: subject.id}) }}">Marquer comme résolu</a>
+<section class="card-text">{{ subject.description }}</section>
+<span class="card-text">
+    <small class="text-muted">
+        {{ subject.updatedAt|localizeddate }}
+    </small>
+</span>

@@ -11,4 +11,5 @@
 'AppBundle\Entity\Reply':
     reply_{1..500}:
         subject: '@subject_*'
+        author:  '<name()>'
         text:    '<sentences(3, true)>'
